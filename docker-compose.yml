@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    # 使用するイメージが存在しない場合、ビルドする
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # ソースコードをコンテナ内にマウント（変更をコンテナ内で反映）
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: ["./myapp"]  # 実行するコマンド（Goバイナリ）
+    environment:
+      - GO111MODULE=on
+    # ホットリロードツール 'air' を使う場合は、以下を追加
+    depends_on:
+      - air
+
+  air:
+    image: "airupair/air"  # airツールの公式Dockerイメージ
+    volumes:
+      - .:/app  # ソースコードをマウント
+    working_dir: /app
+    command: air
+    environment:
+      - AIR_WATCH_DIR=/app
