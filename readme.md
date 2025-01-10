@@ -1,6 +1,11 @@
 ## App Runnerにgoのwebアプリをデプロイするまで
 
 ### goのwebアプリ
+#### 事前準備
+
+```bash
+go mod init github.com/pisa-kun/sample-golang-webserver
+```
 
 #### ローカルで起動する場合
 
@@ -8,6 +13,14 @@
 # すでにポートが起動している場合
 kill -9 $(lsof -t -i :3000)
 go run main.go
+```
+
+exe形式で実行する場合
+```bash
+# すでにポートが起動している場合
+kill -9 $(lsof -t -i :3000)
+go build -o myapp.exe .
+myapp.exe
 ```
 
 #### dockerで動かす場合

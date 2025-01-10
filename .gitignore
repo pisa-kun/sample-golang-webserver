@@ -5,6 +5,7 @@
 /*.exe
 /*.out
 /*.test
+/tmp
 
 # Goモジュール関連
 /go.sum

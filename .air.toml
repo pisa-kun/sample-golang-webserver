@@ -1,0 +1,17 @@
+# .air.tomlの例
+
+# ファイル監視の設定
+root = "."  # 監視するディレクトリ
+tmp_dir = "tmp"  # ビルドファイルを保存する一時ディレクトリ
+
+# 実行するコマンド
+[build]
+  cmd = "go run main.go"  # Goアプリケーションの起動コマンド
+  bin = "./myapp"  # 出力するバイナリファイル
+  ignore = ["\\.git/", "\\.idea/", "tmp/"]  # 監視しないディレクトリやファイル
+  [build.args]
+    -tags = "dev"
+
+# 自動的にリロードする設定
+[logger]
+  time = true  # ログにタイムスタンプを追加

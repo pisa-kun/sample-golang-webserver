@@ -10,19 +10,26 @@ services:
       # ソースコードをコンテナ内にマウント（変更をコンテナ内で反映）
       - .:/app
     ports:
-      - "3000:3000"
+      - "8080:8080"
     command: ["./myapp"]  # 実行するコマンド（Goバイナリ）
     environment:
       - GO111MODULE=on
     # ホットリロードツール 'air' を使う場合は、以下を追加
     depends_on:
       - air
+    # TODO:ホットリロードうまくいってないのでどこかでチェック
+    develop:
+      watch:
+        - action: sync
+          paths: .
 
   air:
-    image: "airupair/air"  # airツールの公式Dockerイメージ
+    image: cosmtrek/air  # airツールの公式Dockerイメージ
     volumes:
       - .:/app  # ソースコードをマウント
     working_dir: /app
     command: air
     environment:
       - AIR_WATCH_DIR=/app
+    # air用の設定を追加
+    entrypoint: ["air", "-c", "/app/.air.toml"]  # airの設定ファイル（.air.toml）を指定
