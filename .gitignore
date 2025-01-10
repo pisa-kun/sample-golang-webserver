@@ -1,0 +1,21 @@
+# Goのビルド結果
+/bin/
+/obj/
+/build/
+/*.exe
+/*.out
+/*.test
+
+# Goモジュール関連
+/go.sum
+/go.mod
+
+# Goのキャッシュディレクトリ
+/.cache/
+/.vscode/
+/.idea/
+
+# その他の不要なファイル
+.DS_Store  # macOS
+Thumbs.db  # Windows
+*.log      # ログファイル
