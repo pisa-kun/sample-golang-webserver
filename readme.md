@@ -90,9 +90,14 @@ go get github.com/aws/aws-sdk-go
 cdk init app --language go
 ```
 
-モジュールのインストール
+モジュールのダウンロード
 ```bash
-go get github.com/aws/aws-cdk-go/awscdk/v2
-go get github.com/aws/aws-cdk-go/awscdk/v2/awsec2
-go get github.com/aws/aws-cdk-go/awscdk/v2/awsapprunner
+go mod download github.com/aws/aws-cdk-go/awscdk/v2
+go mod download github.com/aws/constructs-go/constructs/v10
+go mod download github.com/aws/jsii-runtime-go
+```
+
+go.modとgo.sumの更新
+```bash
+go mod tidy
 ```
