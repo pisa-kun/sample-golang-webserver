@@ -32,6 +32,22 @@ docker build -t my-golang-webapp .
 docker run -p 8080:8080 my-golang-webapp
 ```
 
+credentialsをもとにローカルでaws s3にアクセスさせる際はdocker-compose.ymlのvolumeを指定する。
+
+```yaml
+services:
+  app:
+    # 使用するイメージが存在しない場合、ビルドする
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # ソースコードをコンテナ内にマウント（変更をコンテナ内で反映）
+      - .:/app
+      # 認証情報をコンテナに渡す
+      - ~/.aws/:/root/.aws
+```
+
 ### AWS ECRにデプロイ
 
 AWS ECRにデプロイするための手順です。
