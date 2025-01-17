@@ -48,13 +48,13 @@ aws ecr create-repository --repository-name my-golang-webapp
 DockerをECRにログインさせるために、以下のコマンドを実行します。
 
 ```bash
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.us-west-2.amazonaws.com
+aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.ap-northeast-1.amazonaws.com
 ```
 3. タグを付けてプッシュ
 
 ビルドしたDockerイメージにECRリポジトリのタグを付け、プッシュします。
 
 ```bash
-docker tag my-golang-webapp:latest <your-aws-account-id>.dkr.ecr.us-west-2.amazonaws.com/my-golang-webapp:latest
-docker push <your-aws-account-id>.dkr.ecr.us-west-2.amazonaws.com/my-golang-webapp:latest
+docker tag my-golang-webapp:latest <your-aws-account-id>.dkr.ecr.ap-northeast-1.amazonaws.com/my-golang-webapp:latest
+docker push <your-aws-account-id>.dkr.ecr.ap-northeast-1.amazonaws.com/my-golang-webapp:latest
 ```
