@@ -1,10 +1,8 @@
 package main
 
 import (
-	"github.com/aws/aws-cdk-go/awscdk/awsapprunner"
-	"github.com/aws/aws-cdk-go/awscdk/awsecr"
-	"github.com/aws/aws-cdk-go/awscdk/awsiam"
 	"github.com/aws/aws-cdk-go/awscdk/v2"
+	// "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
 )
@@ -13,53 +11,31 @@ type CdkStackProps struct {
 	awscdk.StackProps
 }
 
-func NewAppRunnerStack(scope constructs.Construct, id string, props *AppRunnerStackProps) awscdk.Stack {
-	stack := awscdk.NewStack(scope, &id, &props.StackProps)
+func NewCdkStack(scope constructs.Construct, id string, props *CdkStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	stack := awscdk.NewStack(scope, &id, &sprops)
 
-	// ECRリポジトリからDockerイメージを取得
-	repository := awsecr.NewRepository(stack, jsii.String("MyRepo"), &awsecr.RepositoryProps{
-		RepositoryName: jsii.String("my-golang-webapp"),
-	})
+	// The code that defines your stack goes here
 
-	// S3読み取り用のIAMロール
-	role := awsiam.NewRole(stack, jsii.String("AppRunnerRole"), &awsiam.RoleProps{
-		AssumedBy: awsiam.NewServicePrincipal(jsii.String("build.apprunner.amazonaws.com"), nil),
-	})
-	role.AddToPolicy(awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
-		Actions:   &[]*string{jsii.String("s3:GetObject")},
-		Resources: &[]*string{bucket.ArnForObjects(jsii.String("*"))},
-	}))
-
-	// App Runnerサービスを作成
-	awsapprunner.NewCfnService(stack, jsii.String("MyAppRunnerService"), &awsapprunner.CfnServiceProps{
-		ServiceName: jsii.String("golang-webapp-service"),
-		SourceConfiguration: &awsapprunner.CfnService_SourceConfigurationProperty{
-			ImageRepository: &awsapprunner.CfnService_ImageRepositoryProperty{
-				ImageIdentifier:     jsii.String("674172895730.dkr.ecr.ap-northeast-1.amazonaws.com/my-golang-webapp:latest"),
-				ImageRepositoryType: jsii.String("ECR"),
-			},
-			AuthenticationConfiguration: &awsapprunner.CfnService_AuthenticationConfigurationProperty{
-				// 認証設定が必要な場合は追加
-			},
-		},
-		InstanceConfiguration: &awsapprunner.CfnService_InstanceConfigurationProperty{
-			Cpu:             jsii.String("1024"), // 1 vCPU
-			Memory:          jsii.String("2048"), // 2 GB
-			InstanceRoleArn: role.RoleArn(),
-		},
-	})
+	// example resource
+	// queue := awssqs.NewQueue(stack, jsii.String("CdkQueue"), &awssqs.QueueProps{
+	// 	VisibilityTimeout: awscdk.Duration_Seconds(jsii.Number(300)),
+	// })
 
 	return stack
 }
 
 func main() {
+	defer jsii.Close()
+
 	app := awscdk.NewApp(nil)
 
-	NewAppRunnerStack(app, "AppRunnerStack", &AppRunnerStackProps{
-		StackProps: awscdk.StackProps{
-			Env: &awscdk.Environment{
-				Region: jsii.String("ap-northeast-1"),
-			},
+	NewCdkStack(app, "CdkStack", &CdkStackProps{
+		awscdk.StackProps{
+			Env: env(),
 		},
 	})
 
