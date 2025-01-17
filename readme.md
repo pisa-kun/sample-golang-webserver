@@ -11,7 +11,7 @@ go mod init github.com/pisa-kun/sample-golang-webserver
 
 ```bash
 # すでにポートが起動している場合
-kill -9 $(lsof -t -i :3000)
+kill -9 $(lsof -t -i :3000) // mac
 go run main.go
 ```
 
@@ -57,4 +57,26 @@ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS
 ```bash
 docker tag my-golang-webapp:latest <your-aws-account-id>.dkr.ecr.ap-northeast-1.amazonaws.com/my-golang-webapp:latest
 docker push <your-aws-account-id>.dkr.ecr.ap-northeast-1.amazonaws.com/my-golang-webapp:latest
+```
+
+### aws sdkでs3にアクセスする
+dockerで起動するwebアプリがS3にアクセスするように設定する。
+
+1. go getでsdkインストールする。
+
+```bash
+go get github.com/aws/aws-sdk-go
+```
+
+### CDKプロジェクトの初期化
+
+```bash
+cdk init app --language go
+```
+
+モジュールのインストール
+```bash
+go get github.com/aws/aws-cdk-go/awscdk/v2
+go get github.com/aws/aws-cdk-go/awscdk/v2/awsec2
+go get github.com/aws/aws-cdk-go/awscdk/v2/awsapprunner
 ```

@@ -9,6 +9,8 @@ services:
     volumes:
       # ソースコードをコンテナ内にマウント（変更をコンテナ内で反映）
       - .:/app
+      # 認証情報をコンテナに渡す
+      - ~/.aws/:/root/.aws
     ports:
       - "8080:8080"
     command: ["./myapp"]  # 実行するコマンド（Goバイナリ）
