@@ -84,6 +84,62 @@ dockerで起動するwebアプリがS3にアクセスするように設定する
 go get github.com/aws/aws-sdk-go
 ```
 
+#### app runnerがs3にアクセスするIAMロールを作成する
+
+1. 信頼関係ポリシードキュメントを作成する
+まず、App Runnerサービスがロールを引き受けることができるようにする信頼関係ポリシーを作成します。これにより、App Runnerが指定されたIAMロールを使用できるようになります。
+
+以下のコマンドを実行し、信頼関係ポリシーを記述したJSONファイルを作成します。
+
+```
+cat << EOF > apprunner-role-policy.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "tasks.apprunner.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+```
+
+2. IAMロールの作成
+次に、上記の信頼関係ポリシーを使用して、App Runner専用のIAMロールを作成します。このロールは、App Runnerのインスタンスが実行するために使用されます。
+
+以下のコマンドを実行して、apprunner-s3-roleという名前のIAMロールを作成します。
+
+```bash
+aws iam create-role --role-name apprunner-s3-role --path '/apprunner/' --assume-role-policy-document file://apprunner-role-policy.json
+```
+
+3. Amazon S3アクセス用のポリシーをアタッチ
+App RunnerがAmazon S3にアクセスするためには、適切なアクセス権限を付与する必要があります。これを実現するために、AmazonS3FullAccessやAmazonS3ReadOnlyAccessなどのAWS管理ポリシーをIAMロールにアタッチします。
+
+ここでは、AmazonS3FullAccessポリシーをアタッチして、S3への読み書きアクセスを許可します。
+
+以下のコマンドを実行して、作成したIAMロールにS3のアクセス権限をアタッチします。
+
+```bash
+aws iam attach-role-policy --role-name apprunner-s3-role --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+```
+
+4. App Runner アプリケーションにIAMロールを関連付ける
+最後に、App Runnerサービスに作成したIAMロールを関連付けます。この操作は、AWSマネジメントコンソールまたはAWS CLIで行いますが、CLIで行う場合は次のように設定できます。
+
+まず、App Runnerサービスの詳細情報を取得し、ロールを設定します。
+
+```bash
+aws apprunner update-service \
+  --service-arn <app-runner-service-arn> \
+  --instance-role arn:aws:iam::<aws-account-id>:role/apprunner-s3-role
+```
+
 ### CDKプロジェクトの初期化
 
 ```bash
