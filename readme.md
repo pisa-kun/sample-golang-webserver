@@ -157,3 +157,7 @@ go.modとgo.sumの更新
 ```bash
 go mod tidy
 ```
+
+### ecr作成時にdockerイメージをpushする
+
+https://qiita.com/suzuki-navi/items/613311d1a31d0306be0d
