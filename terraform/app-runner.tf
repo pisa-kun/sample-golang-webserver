@@ -9,7 +9,8 @@ resource "aws_apprunner_service" "example" {
     
     image_repository {
       image_configuration {
-        port = "8000"
+        # Health Checkがあるので、port番号は正しいか注意
+        port = "8080"
       }
       image_identifier      = "${aws_ecr_repository.app_runner_image.repository_url}:latest"
       image_repository_type = "ECR"

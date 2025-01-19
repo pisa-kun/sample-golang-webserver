@@ -5,9 +5,10 @@ resource "null_resource" "build_and_push_docker_image" {
   // シェルスクリプトを実行し、Terraform の変数を引数として渡す
   // TODO: Windows特化になっているので他OSでも使えるように
   // sh ./deploy.sh ${var.region} ${aws_ecr_repository.app_runner_image.repository_url}
-  provisioner "local-exec" {
-    command = <<EOT
-      powershell -ExecutionPolicy ByPass -Command "./deploy.ps1 '${var.region}' '${aws_ecr_repository.app_runner_image.repository_url}'"
-    EOT
-  }
+  // memo: 現行は手動でimageをbuildしてpushしている
+  # provisioner "local-exec" {
+  #   command = <<EOT
+  #     powershell -ExecutionPolicy ByPass -Command "./deploy.ps1 '${var.region}' '${aws_ecr_repository.app_runner_image.repository_url}'"
+  #   EOT
+  # }
 }
