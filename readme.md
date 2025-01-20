@@ -161,3 +161,40 @@ go mod tidy
 ### ecr作成時にdockerイメージをpushする
 
 https://qiita.com/suzuki-navi/items/613311d1a31d0306be0d
+
+
+### CDKプロジェクトの初期化(ts)
+
+```bash
+cdk init app --language typescript
+```
+
+ecr作成後、
+```bash
+$ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.ap-northeast-1.amazonaws.com
+$ docker build -t my-golang-webapp .
+$ docker tag my-golang-webapp ${REPOSITORY_URI}
+$ docker push ${REPOSITORY_URI}
+```
+
+IamRoleの付与とAppRunnerへの設定がつまるところ
+```ts
+    const accessRole = new iam.Role(scope, 'AppRunnerAccessRole', {
+      roleName: 'myapp-AppRunnerAccessRole',
+      assumedBy: new iam.ServicePrincipal('build.apprunner.amazonaws.com'),
+    })
+    accessRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSAppRunnerServicePolicyForECRAccess'),
+    )
+
+    const cfnService = new appRunner.CfnService(scope, 'MyAppService', {
+      sourceConfiguration: {
+        authenticationConfiguration: {
+          accessRoleArn: accessRole.roleArn,
+        },
+        // 略
+```
+#### deploy
+cdk deploy --all
+
+https://tech.robotpayment.co.jp/entry/2023/06/01/070000
