@@ -9,7 +9,7 @@ export class CdkTsStack extends cdk.Stack {
     super(scope, id, props);
         // ECR
         const repository = new ecr.Repository(this, 'AppRunnerExampleRepository',{
-          repositoryName: "golang_sumisumi_repository",
+          repositoryName: "typescript_sumisumi_repository",
           imageTagMutability: ecr.TagMutability.IMMUTABLE,
         })
 
