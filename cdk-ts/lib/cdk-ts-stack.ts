@@ -13,7 +13,7 @@ export class CdkTsStack extends cdk.Stack {
           imageTagMutability: ecr.TagMutability.IMMUTABLE,
         })
 
-        const backendApp = new AppRunner(this, 'GoBackend', {
+        const backendApp = new AppRunner(this, 'TsBackend', {
           repository: repository
         })
 
