@@ -198,3 +198,7 @@ IamRoleの付与とAppRunnerへの設定がつまるところ
 cdk deploy --all
 
 https://tech.robotpayment.co.jp/entry/2023/06/01/070000
+
+## Fargateへのデプロイ
+
+https://zenn.dev/hirokisakabe/articles/73d7d30a0e2ec8
