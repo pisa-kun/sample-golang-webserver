@@ -26,4 +26,11 @@ go get "github.com/lib/pq"
 
 ```bash
 docker-compose up --build
+docker-compose restart
+```
+ローカルで起動時に、アプリ側がpostgreSQLが立ち上がるまで待機する必要あり(アプリ側のコンテナは落ちる)
+
+コンテナとボリュームを停止して削除する場合は-vつけること
+```bash
+docker-compose down -v
 ```

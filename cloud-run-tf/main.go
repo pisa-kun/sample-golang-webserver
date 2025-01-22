@@ -35,7 +35,15 @@ func main() {
 
 	// HTTP ハンドラ
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello World!, Cloud SQL Version %s", version)
+		var user string
+		var age int
+		err := db.QueryRow("SELECT * FROM users WHERE age = 16").Scan(&user, &age)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, "Hello World!, Cloud SQL Version %s\n", version)
+		fmt.Fprintf(w, "User: %s, Age: %d\n", user, age)
 	})
 
 	log.Println("Server starting on port 8080...")
