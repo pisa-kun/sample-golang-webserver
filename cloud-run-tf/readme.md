@@ -34,3 +34,49 @@ docker-compose restart
 ```bash
 docker-compose down -v
 ```
+
+3. Terraformの設定
+Google Cloud SDK のインストールと認証
+
+```bash
+gcloud auth login
+gcloud config configurations list
+gcloud config set project YOUR_PROJECT_ID
+```
+Artifact Registry の作成
+
+```bash
+gcloud services enable artifactregistry.googleapis.com
+gcloud artifacts repositories create YOUR_REPOSITORY_NAME --repository-format=docker --location=us-central1
+```
+Docker イメージのビルド
+
+Go アプリケーションのディレクトリに移動して、Docker イメージをビルドします。
+
+```bash
+docker build -t us-central1-docker.pkg.dev/YOUR_PROJECT_ID/YOUR_REPOSITORY_NAME/your-image-name .
+```
+Artifact Registry へ Docker イメージを Push
+
+```bash
+docker push us-central1-docker.pkg.dev/YOUR_PROJECT_ID/YOUR_REPOSITORY_NAME/your-image-name
+```
+これで、Docker イメージが Artifact Registry にアップロードされました。
+
+### Terraform 実行
+
+terraform init
+terraform plan
+terraform apply
+
+https://zenn.dev/ring_belle/books/gcp-cloudrun-terraform/viewer/cloudrun-basic
+
+### Cloud SQLにデータ挿入
+```bash
+gcloud sql connect your-db-instance --user=your_user --password
+```
+その後、psql コマンドで init.sql を実行します。
+
+```bash
+\i init.sql
+```
