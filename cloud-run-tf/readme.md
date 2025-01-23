@@ -72,11 +72,4 @@ terraform apply
 https://zenn.dev/ring_belle/books/gcp-cloudrun-terraform/viewer/cloudrun-basic
 
 ### Cloud SQLにデータ挿入
-```bash
-gcloud sql connect your-db-instance --user=your_user --password
-```
-その後、psql コマンドで init.sql を実行します。
-
-```bash
-\i init.sql
-```
+Cloud SQL Stuidoからアクセスして挿入する。

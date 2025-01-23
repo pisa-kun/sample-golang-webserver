@@ -73,5 +73,6 @@ resource "google_vpc_access_connector" "your_vpc_connector" {
   region = var.region
   network = var.vpc_network
   ip_cidr_range = "10.8.0.0/28"  # CIDR範囲を指定
-  max_instances    = 3
+  max_throughput = 500
+  min_throughput = 200
 }
