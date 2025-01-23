@@ -73,10 +73,6 @@ docker push us-central1-docker.pkg.dev/YOUR_PROJECT_ID/YOUR_REPOSITORY_NAME/your
 ```
 これで、Docker イメージが Artifact Registry にアップロードされました。
 
-gcloud artifacts repositories create cloud-run-repo --repository-format=docker --location=us-central1
-docker build -t us-central1-docker.pkg.dev/m-tanaka-sample/cloud-run-repo/your-image-name .
-docker push us-central1-docker.pkg.dev/m-tanaka-sample/cloud-run-repo/your-image-name
-
 ### Terraform 実行
 
 terraform init
