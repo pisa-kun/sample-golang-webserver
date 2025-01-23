@@ -78,4 +78,4 @@ terraform apply
 https://zenn.dev/ring_belle/books/gcp-cloudrun-terraform/viewer/cloudrun-basic
 
 ### Cloud SQLにデータ挿入
-Cloud SQL Stuidoからアクセスして挿入する。
+Cloud SQL Studioからアクセスして挿入する。
