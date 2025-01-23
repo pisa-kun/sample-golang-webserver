@@ -40,9 +40,17 @@ Google Cloud SDK のインストールと認証
 
 ```bash
 gcloud auth login
+gcloud auth application-default login
 gcloud config configurations list
 gcloud config set project YOUR_PROJECT_ID
 ```
+
+認証の追加
+```bash
+gcloud services enable sqladmin.googleapis.com
+gcloud services enable vpcaccess.googleapis.com
+```
+
 Artifact Registry の作成
 
 ```bash
