@@ -47,6 +47,8 @@ Artifact Registry の作成
 
 ```bash
 gcloud services enable artifactregistry.googleapis.com
+# Artifact Registry に対して操作を行うためには、Google Cloud の認証情報を適切に設定する必要
+gcloud auth configure-docker us-central1-docker.pkg.dev
 gcloud artifacts repositories create YOUR_REPOSITORY_NAME --repository-format=docker --location=us-central1
 ```
 Docker イメージのビルド
@@ -62,6 +64,10 @@ Artifact Registry へ Docker イメージを Push
 docker push us-central1-docker.pkg.dev/YOUR_PROJECT_ID/YOUR_REPOSITORY_NAME/your-image-name
 ```
 これで、Docker イメージが Artifact Registry にアップロードされました。
+
+gcloud artifacts repositories create cloud-run-repo --repository-format=docker --location=us-central1
+docker build -t us-central1-docker.pkg.dev/m-tanaka-sample/cloud-run-repo/your-image-name .
+docker push us-central1-docker.pkg.dev/m-tanaka-sample/cloud-run-repo/your-image-name
 
 ### Terraform 実行
 
