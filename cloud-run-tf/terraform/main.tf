@@ -6,10 +6,10 @@ resource "google_sql_database_instance" "postgres_instance" {
 
   settings {
     tier = "db-f1-micro"
+    // 
     ip_configuration {
-      authorized_networks {
-        value = "0.0.0.0/0"
-      }
+      private_network = google_compute_network.vpc_network.id
+      ipv4_enabled    = false
     }
   }
 }
@@ -29,6 +29,7 @@ resource "google_cloud_run_v2_service" "your_service" {
   name     = "your-cloud-run-service"
   location = var.region
   deletion_protection=false
+  ingress  = "INGRESS_TRAFFIC_ALL"
 
   template {
       containers {
@@ -52,6 +53,7 @@ resource "google_cloud_run_v2_service" "your_service" {
       }
       vpc_access {
         connector = google_vpc_access_connector.your_vpc_connector.id
+        egress    = "ALL_TRAFFIC"
       }
     }
   }
@@ -70,11 +72,30 @@ resource "google_cloud_run_v2_service_iam_policy" "policy" {
 }
 
 
+// network
+resource "google_compute_network" "vpc_network" {
+  name = "main-network"
+}
 resource "google_vpc_access_connector" "your_vpc_connector" {
   name   = "your-vpc-connector"
   region = var.region
-  network = var.vpc_network
+  network = google_compute_network.vpc_network.id
   ip_cidr_range = "10.8.0.0/28"  # CIDR範囲を指定
   max_throughput = 500
   min_throughput = 200
+}
+
+# Private Service Access
+resource "google_compute_global_address" "private_ip_address" {
+  name          = "private-ip-alloc"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  address       = "10.10.0.0"
+  prefix_length = 16
+  network       = google_compute_network.vpc_network.id
+}
+resource "google_service_networking_connection" "default" {
+  network                 = google_compute_network.vpc_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }

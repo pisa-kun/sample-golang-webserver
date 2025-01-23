@@ -49,6 +49,8 @@ gcloud config set project YOUR_PROJECT_ID
 ```bash
 gcloud services enable sqladmin.googleapis.com
 gcloud services enable vpcaccess.googleapis.com
+gcloud services enable servicenetworking.googleapis.com
+
 ```
 
 Artifact Registry の作成
