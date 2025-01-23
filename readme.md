@@ -1,3 +1,10 @@
+# GoのWebアプリをクラウドにアップロードする
+- TerraformでApp Runnerにデプロイ
+- CDKでApp Runnerにデプロイ
+- CDKでFargateにデプロイ
+- TerraformでCloud Run + Cloud SQL(PostgreSQL)にデプロイ
+- CDKでApp Runner + RDS(PostgreSQL)にデプロイ
+
 ## App Runnerにgoのwebアプリをデプロイするまで
 
 ### goのwebアプリ
