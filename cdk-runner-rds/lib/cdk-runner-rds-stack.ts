@@ -13,15 +13,23 @@ export class CdkRunnerRdsStack extends cdk.Stack {
     // VPCの作成
     const vpc = new ec2.Vpc(this, 'MyVpc', {
       maxAzs: 1, // single AZ
+      natGateways: 0, // NATゲートウェイなし
+      subnetConfiguration: [
+        {
+          name: 'PrivateSubnet',
+          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS, // プライベートサブネット
+          cidrMask: 24,
+        },
+      ],
     });
 
     // RDSの接続情報の設定
     const dbInstanceName = 'your-db-instance';
-    const dbName = 'your-db-name';
-    const dbUser = 'your-user';
-    const dbPassword = 'your-password';
+    const dbName = 'your_db_name';
+    const dbUser = 'your_user';
+    const dbPassword = 'your_password';
 
-    // RDSインスタンスの作成（private subnet）
+    // RDSインスタンスの作成（プライベートサブネット）
     const rdsInstance = new rds.DatabaseInstance(this, 'MyRDSInstance', {
       instanceIdentifier: dbInstanceName,
       engine: rds.DatabaseInstanceEngine.postgres({
@@ -29,55 +37,45 @@ export class CdkRunnerRdsStack extends cdk.Stack {
       }),
       vpc,
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
       multiAz: false,
-      credentials: rds.Credentials.fromPassword(dbUser, cdk.SecretValue.plainText(dbPassword)),
+      credentials: rds.Credentials.fromPassword(dbUser, cdk.SecretValue.unsafePlainText(dbPassword)),
       databaseName: dbName,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false,
     });
 
-    // App RunnerのVPC Connector
+    // App RunnerのVPC Connector作成
     const vpcConnector = new appRunner.CfnVpcConnector(this, 'MyVpcConnector', {
-      vpcConnectorName: "apprunner-demo-vpc-connector",
+      vpcConnectorName: 'apprunner-vpc-connector',
       subnets: vpc.selectSubnets({
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS, // プライベートサブネット
       }).subnetIds,
     });
-    // App Runnerに必要なIAMロールを作成
-    const appRunnerRole = new iam.Role(this, 'AppRunnerRole', {
+
+    // App Runnerに必要なIAMロール作成
+    const appRunnerServiceRole = new iam.Role(this, 'AppRunnerServiceRole', {
       assumedBy: new iam.ServicePrincipal('build.apprunner.amazonaws.com'),
     });
-    appRunnerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSAppRunnerServicePolicyForVpcAccess'));
 
-    // App Runner
-    const ecrRepo = ecr.Repository.fromRepositoryName(this, "SumikaRepo", "sumika-repository");
+    appRunnerServiceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSAppRunnerServicePolicyForVpcAccess'));
+
+    // App Runner Serviceの作成
+    const ecrRepo = ecr.Repository.fromRepositoryName(this, 'MyECRRepo', 'sumika-repository');
 
     const appRunnerService = new appRunner.CfnService(this, 'MyAppRunnerService', {
       serviceName: 'my-app-runner-service',
-      networkConfiguration: {
-        egressConfiguration:{
-          egressType: 'VPC',
-          vpcConnectorArn: vpcConnector.attrVpcConnectorArn,
-        }
-      },
       sourceConfiguration: {
         autoDeploymentsEnabled: false,
-        authenticationConfiguration: {
-          accessRoleArn: appRunnerRole.roleArn,
-      },
         imageRepository: {
           imageRepositoryType: 'ECR',
           imageIdentifier: `${ecrRepo.repositoryUri}:latest`,
           imageConfiguration: {
-            port: '8080', // アプリがリスンするポート
-            runtimeEnvironmentVariables:[
-              // AppRunner用環境変数を定義
-              // SecretManager経由が好ましい
+            runtimeEnvironmentVariables: [
               {
                 name: 'DB_HOST',
-                value: rdsInstance.dbInstanceEndpointAddress,
+                value: rdsInstance.dbInstanceEndpointAddress,  // RDSのエンドポイントを環境変数として設定
               },
               {
                 name: 'DB_NAME',
@@ -90,11 +88,26 @@ export class CdkRunnerRdsStack extends cdk.Stack {
               {
                 name: 'DB_PASSWORD',
                 value: dbPassword,
-              }
-          ]
+              },
+            ],
           },
         },
+        authenticationConfiguration: {
+          accessRoleArn: appRunnerServiceRole.roleArn,
+        },
       },
+      networkConfiguration: {
+        egressConfiguration: {
+          egressType: 'VPC',
+          vpcConnectorArn: vpcConnector.attrVpcConnectorArn,  // VPC Connectorを指定
+        },
+      },
+    });
+
+    // 出力
+    new cdk.CfnOutput(this, 'AppRunnerServiceUrl', {
+      exportName: 'AppRunnerServiceUrl',
+      value: appRunnerService.attrServiceUrl,
     });
   }
 }
