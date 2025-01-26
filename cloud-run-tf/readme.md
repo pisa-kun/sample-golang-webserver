@@ -85,3 +85,15 @@ https://zenn.dev/ring_belle/books/gcp-cloudrun-terraform/viewer/cloudrun-basic
 
 ### Cloud SQLにデータ挿入
 Cloud SQL Studioからアクセスして挿入する。
+
+## API Gatewayの追加
+
+https://zenn.dev/cloud_ace/articles/f863f83a0f75dd
+
+1. Google Cloud APIの有効化
+
+```bash
+gcloud services enable apigateway.googleapis.com         # API Gateway API
+gcloud services enable servicemanagement.googleapis.com  # Service Management API
+gcloud services enable servicecontrol.googleapis.com     # Service Control API
+```
