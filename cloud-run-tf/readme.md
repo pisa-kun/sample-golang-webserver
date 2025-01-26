@@ -97,3 +97,6 @@ gcloud services enable apigateway.googleapis.com         # API Gateway API
 gcloud services enable servicemanagement.googleapis.com  # Service Management API
 gcloud services enable servicecontrol.googleapis.com     # Service Control API
 ```
+
+### API Gatewayにレートリミット追加
+openapi.yamlに記載する。
