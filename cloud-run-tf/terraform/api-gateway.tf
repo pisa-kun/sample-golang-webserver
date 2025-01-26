@@ -27,7 +27,7 @@ resource "google_api_gateway_api_config" "api_gateway_config" {
     display_name = "my-api-gateway-config" # 任意
     gateway_config {
       backend_config {
-        google_service_account = google_service_account.api-gateway-service-account
+        google_service_account = google_service_account.api-gateway-service-account.email
       }
     }
 
