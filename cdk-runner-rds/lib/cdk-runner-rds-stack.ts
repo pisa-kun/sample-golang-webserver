@@ -113,5 +113,7 @@ export class CdkRunnerRdsStack extends cdk.Stack {
       exportName: 'AppRunnerServiceUrl',
       value: appRunnerService.attrServiceUrl,
     });
+
+    appRunnerService.node.addDependency(rdsInstance)
   }
 }

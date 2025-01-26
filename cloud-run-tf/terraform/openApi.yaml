@@ -14,8 +14,7 @@ paths:
       description: Returns a simple hello world message in JSON format.
       operationId: getHello
       x-google-backend:
-        address: { Cloud Runの 公開URL }
-        path_translation: { APPEND_PATH_TO_ADDRESS or CONSTANT_ADDRESS }
+        address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/
       produces:
         - "application/json"
       responses:
