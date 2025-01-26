@@ -12,7 +12,7 @@ export class CdkRunnerRdsStack extends cdk.Stack {
     
     // VPCの作成
     const vpc = new ec2.Vpc(this, 'MyVpc', {
-      maxAzs: 1, // single AZ
+      maxAzs: 2, // Multi AZ
       natGateways: 0, // NATゲートウェイなし
       subnetConfiguration: [
         {
@@ -39,7 +39,7 @@ export class CdkRunnerRdsStack extends cdk.Stack {
       vpcSubnets: {
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
-      multiAz: false,
+      multiAz: true,
       credentials: rds.Credentials.fromPassword(dbUser, cdk.SecretValue.unsafePlainText(dbPassword)),
       databaseName: dbName,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -59,7 +59,11 @@ export class CdkRunnerRdsStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal('build.apprunner.amazonaws.com'),
     });
 
-    appRunnerServiceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSAppRunnerServicePolicyForVpcAccess'));
+    appRunnerServiceRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName(
+        "service-role/AWSAppRunnerServicePolicyForECRAccess"
+      )
+    );
 
     // App Runner Serviceの作成
     const ecrRepo = ecr.Repository.fromRepositoryName(this, 'MyECRRepo', 'sumika-repository');
