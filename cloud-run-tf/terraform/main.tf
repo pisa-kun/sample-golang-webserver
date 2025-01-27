@@ -33,7 +33,8 @@ resource "google_cloud_run_v2_service" "your_service" {
 
   template {
       containers {
-        image = "us-central1-docker.pkg.dev/${var.project_id}/${var.repository_name}/${var.image_name}"
+        # latestを明示的につけないとイメージが切り替わらない
+        image = "us-central1-docker.pkg.dev/${var.project_id}/${var.repository_name}/${var.image_name}:latest"
         env {
           name  = "DB_HOST"
           value = google_sql_database_instance.postgres_instance.ip_address[0].ip_address

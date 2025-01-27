@@ -82,7 +82,8 @@ paths:
           required: false
           type: integer
       x-google-backend:
-        address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/
+        # addressに/userを付けること
+        address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/user
       produces:
         - "application/json"
       responses:
