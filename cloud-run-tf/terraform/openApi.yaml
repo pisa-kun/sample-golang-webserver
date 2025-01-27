@@ -29,7 +29,8 @@ paths:
       description: Returns a simple hello world message in JSON format.
       operationId: getHello
       x-google-backend:
-        address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/
+        # address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/
+        address: https://your-cloud-run-service-qvkxmol5ga-uc.a.run.app/
       produces:
         - "application/json"
       responses:
@@ -45,3 +46,25 @@ paths:
           examples:
             application/json:
               message: "hello, world"
+  /test:
+    get:
+      summary: Test endpoint that returns the same hello message, api gateway test
+      description: Returns a simple hello world message in JSON format. パスを追加して別のAPIを呼び出す(cloud run, lambda, functions, app runner etc...)
+      operationId: getTestHello
+      x-google-backend:
+        address: https://your-cloud-run-service-qvkxmol5ga-uc.a.run.app/
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: A JSON object containing a hello world message.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+          examples:
+            application/json:
+              message: "hello, world test"
