@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  title: Hello World API
+  description: This API returns a simple "hello, world" message.
+  version: "1.0.0"
+host: "api-gateway-app-xxxx.a.run.app"
+schemes:
+  - "https"
+basePath: "/"
+
+x-google-management:
+  metrics:
+    - name: "read-requests"
+      displayName: "Read requests"
+      valueType: INT64
+      metricKind: DELTA
+  quota:
+    limits:
+      - name: "read-limit"
+        metric: "read-requests"
+        unit: "1/min/{project}"
+        values:
+          STANDARD: 1000  # 1分間に1000回の制限
+
+paths:
+  /2:
+    get:
+      summary: Get a hello message
+      description: Returns a simple hello world message in JSON format.
+      operationId: getHello
+      x-google-backend:
+        # address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/
+        address: https://your-cloud-run-service-qvkxmol5ga-uc.a.run.app/
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: A JSON object containing a hello world message.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+          examples:
+            application/json:
+              message: "hello, world"
