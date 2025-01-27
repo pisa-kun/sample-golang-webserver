@@ -22,7 +22,8 @@ func main() {
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbPort, dbName)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("DB接続エラー:", err)
+		return
 	}
 	defer db.Close()
 
@@ -41,9 +42,57 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		fmt.Fprintf(w, "Hello World!, Cloud SQL Version %s\n", version)
 		fmt.Fprintf(w, "User: %s, Age: %d\n", user, age)
+	})
+
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		// クエリパラメータを取得
+		ageParam := r.URL.Query().Get("age")
+
+		// ageパラメータの検証
+		var age int
+		if ageParam != "" {
+			_, err := fmt.Sscanf(ageParam, "%d", &age)
+			if err != nil {
+				http.Error(w, "ageパラメータは整数でなければなりません", http.StatusBadRequest)
+				return
+			}
+		}
+
+		// SQLクエリ作成
+		query := "SELECT * FROM users"
+		var args []interface{}
+		if ageParam != "" {
+			query += " WHERE age = $1"
+			args = append(args, age)
+		}
+
+		// クエリ実行
+		rows, err := db.Query(query, args...)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("ユーザー検索中にエラーが発生しました: %v", err), http.StatusInternalServerError)
+			return
+		}
+		defer rows.Close()
+
+		// 結果を表示
+		fmt.Fprintf(w, "Hello World!, Cloud SQL Version %s\n", version)
+		for rows.Next() {
+			var userName string
+			var userAge int
+			err = rows.Scan(&userName, &userAge)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("データの読み込みエラー: %v", err), http.StatusInternalServerError)
+				return
+			}
+			fmt.Fprintf(w, "User: %s, Age: %d\n", userName, userAge)
+		}
+
+		if err := rows.Err(); err != nil {
+			http.Error(w, fmt.Sprintf("結果の読み込みエラー: %v", err), http.StatusInternalServerError)
+			return
+		}
 	})
 
 	log.Println("Server starting on port 8080...")
