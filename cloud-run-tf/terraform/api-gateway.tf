@@ -33,7 +33,9 @@ resource "google_api_gateway_api_config" "api_gateway_config" {
 
     openapi_documents {
       document {
-        path = "openApi.yaml"
+        #path = "openApi.yaml"
+        # githubのpathも指定可能
+        path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/cloud-run-tf/terraform/openApi.yaml"
         contents = filebase64("openApi.yaml")
       }
     }
