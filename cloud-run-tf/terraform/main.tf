@@ -29,7 +29,8 @@ resource "google_cloud_run_v2_service" "your_service" {
   name     = "your-cloud-run-service"
   location = var.region
   deletion_protection=false
-  ingress  = "INGRESS_TRAFFIC_ALL"
+  #ingress  = "INGRESS_TRAFFIC_ALL"
+  ingress  = "INGRESS_TRAFFIC_INTERNAL_ONLY"
 
   template {
       containers {

@@ -40,7 +40,11 @@ resource "google_api_gateway_api_config" "api_gateway_config" {
         # path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/cloud-run-tf/terraform/openApi2.yaml"
         # contents = filebase64("openApi2.yaml")
         path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/cloud-run-tf/terraform/openApi.yaml"
-        contents = filebase64("openApi.yaml")
+        # 動的切り替え
+        # contents = filebase64("openApi.yaml")
+        contents = base64decode(templatefile("openApi.yaml",{
+          func_url = google_cloud_run_v2_service.your_service.uri
+        }))
       }
     }
 
