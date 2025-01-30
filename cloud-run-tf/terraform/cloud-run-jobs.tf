@@ -5,7 +5,7 @@ resource "google_cloud_run_v2_job" "your_cloud_run_job" {
 
   template {
     template{
-        timeout = "1800s"
+        timeout = "180s"
         max_retries = 3
         containers {
             image = "us-central1-docker.pkg.dev/${var.project_id}/${var.job_repository_name}/${var.job_image_name}:latest"
