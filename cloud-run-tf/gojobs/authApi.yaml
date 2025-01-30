@@ -1,0 +1,118 @@
+swagger: "2.0"
+info:
+  title: AuthCloudRunAPISample
+  description: This API returns a simple "hello, world" message.
+  version: "1.0.0"
+host: "api-gateway-app-xxxx.a.run.app"
+schemes:
+  - "https"
+basePath: "/"
+
+securityDefinitions:
+  api_key:
+    type: 'apiKey'
+    name: 'x-api-key'
+    in: 'header'
+
+x-google-management:
+  metrics:
+    - name: "read-requests"
+      displayName: "Read requests"
+      valueType: INT64
+      metricKind: DELTA
+  quota:
+    limits:
+      - name: "read-limit"
+        metric: "read-requests"
+        unit: "1/min/{project}"
+        values:
+          STANDARD: 1000  # 1分間に1000回の制限
+
+paths:
+  /:
+    get:
+      summary: Get a hello message
+      security:
+        - api_key: []
+      description: Returns a simple hello world message in JSON format.
+      operationId: getHello
+      x-google-backend:
+        #address: https://your-cloud-run-service-ftcgqrybfq-uc.a.run.app/
+        address: ${func_url}
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: A JSON object containing a hello world message.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+          examples:
+            application/json:
+              message: "hello, world"
+  /test:
+    get:
+      summary: Test endpoint that returns the same hello message, api gateway test
+      description: Returns a simple hello world message in JSON format. パスを追加して別のAPIを呼び出す(cloud run, lambda, functions, app runner etc...)
+      operationId: getTestHello
+      x-google-backend:
+        address: ${func_url}
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: A JSON object containing a hello world message.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+          examples:
+            application/json:
+              message: "hello, world test"
+
+  /user:
+    get:
+      summary: Get users
+      security:
+        - api_key: []
+      description: Returns a list of users. If age is provided, filters users by age.
+      operationId: getUsers
+      parameters:
+        - name: age
+          in: query
+          description: Filter users by age.
+          required: false
+          type: integer
+      x-google-backend:
+        # addressに/userを付けること
+        address: ${func_url}/user
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: A JSON array of user objects.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+              required:
+                - name
+                - age
+          examples:
+            application/json:
+              - name: "Alice"
+                age: 30
+              - name: "Bob"
+                age: 25

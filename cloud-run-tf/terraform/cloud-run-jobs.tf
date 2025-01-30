@@ -34,9 +34,3 @@ resource "google_cloud_run_v2_job" "your_cloud_run_job" {
     }
   }
 }
-
-# resource "google_cloud_run_v2_job_iam_policy" "job_iam_policy" {
-#   location    = var.region
-#   name        = google_cloud_run_v2_job.your_cloud_run_job.name
-#   policy_data = data.google_iam_policy.noauth.policy_data
-# }
