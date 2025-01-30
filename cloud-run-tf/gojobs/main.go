@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Migration Start")
 	// 環境変数からデータベースの接続情報を取得
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")

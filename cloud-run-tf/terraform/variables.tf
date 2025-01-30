@@ -8,7 +8,17 @@ variable "repository_name" {
   type        = string
 }
 
+variable "job_repository_name" {
+  description = "The Artifact Registry repository name where Docker images will be stored."
+  type        = string
+}
+
 variable "image_name" {
+  description = "The name of the Docker image to be used in Cloud Run."
+  type        = string
+}
+
+variable "job_image_name" {
   description = "The name of the Docker image to be used in Cloud Run."
   type        = string
 }
