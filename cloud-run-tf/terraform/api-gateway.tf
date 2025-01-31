@@ -62,22 +62,31 @@ resource "google_api_gateway_gateway" "api_gateway_gateway" {
 }
 
 # Command
-data "external" "api_describe" {
-  program = [
-    "gcloud",
-    "api-gateway",
-    "apis",
-    "describe",
-    "${google_api_gateway_api.api-gateway.api_id}",
-    "--format=json"
-  ]
-}
+# data "external" "api_describe" {
+#   program = [
+#     "gcloud",
+#     "api-gateway",
+#     "apis",
+#     "describe",
+#     "${google_api_gateway_api.api-gateway.api_id}",
+#     "--format=json"
+#   ]
+# }
+
+# resource "null_resource" "enable_api_gateway_service" {
+#   provisioner "local-exec" {
+#     command = <<-EOT
+#       gcloud services enable \
+#       ${data.external.api_describe.result[managedService]}
+#     EOT
+#   }
+# }
 
 resource "null_resource" "enable_api_gateway_service" {
   provisioner "local-exec" {
     command = <<-EOT
       gcloud services enable \
-      ${data.external.api_describe.result[managedService]}
+      ${google_api_gateway_api.api-gateway.managed_service}
     EOT
   }
 }
