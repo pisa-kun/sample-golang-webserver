@@ -6,6 +6,8 @@ provider "google" {
 provider "google-beta" {
   project = var.project_id
   region  = var.region
+  user_project_override = true
+  billing_project       = var.project_id
 }
 
 ## 使用するAPIを有効化する
@@ -47,4 +49,9 @@ resource "google_project_service" "vpcaccess" {
 resource "google_project_service" "servicenetworking" {
   project = var.project_id
   service = "servicenetworking.googleapis.com"
+}
+
+resource "google_project_service" "apikeys" {
+  project = var.project_id
+  service = "apikeys.googleapis.com"
 }

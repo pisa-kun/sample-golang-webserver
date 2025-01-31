@@ -2,6 +2,7 @@
 resource "google_cloud_run_v2_job" "your_cloud_run_job" {
   name     = "your-cloud-run-job"
   location = var.region
+  deletion_protection=false
 
   template {
     template{

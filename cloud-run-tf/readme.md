@@ -67,6 +67,8 @@ Go アプリケーションのディレクトリに移動して、Docker イメ�
 ```bash
 docker build -t us-central1-docker.pkg.dev/YOUR_PROJECT_ID/YOUR_REPOSITORY_NAME/your-image-name .
 ```
+*macの場合、 --platform linux/amd64
+
 Artifact Registry へ Docker イメージを Push
 
 ```bash

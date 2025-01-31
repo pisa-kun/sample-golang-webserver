@@ -82,11 +82,11 @@ resource "google_api_gateway_gateway" "api_gateway_gateway" {
 #   }
 # }
 
+# Apigatewayが作成された後に呼び出す
 resource "null_resource" "enable_api_gateway_service" {
   provisioner "local-exec" {
     command = <<-EOT
-      gcloud services enable \
-      ${google_api_gateway_api.api-gateway.managed_service}
+      gcloud services enable ${google_api_gateway_api.api-gateway.managed_service}
     EOT
   }
 }
@@ -95,10 +95,12 @@ resource "null_resource" "enable_api_gateway_service" {
 resource "google_apikeys_key" "api_key" {
   name = "sample-api-key"
   display_name = "sample-api-key"
+  # provider必要
+  provider = google-beta
+  
     restrictions {
         api_targets {
           service = google_api_gateway_api.api-gateway.managed_service
-          # 上記は google_api_gateway_api.managed_service を用いた場合
         }
   }
 }
