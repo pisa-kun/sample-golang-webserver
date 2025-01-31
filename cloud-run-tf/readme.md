@@ -62,7 +62,6 @@ gcloud auth configure-docker us-central1-docker.pkg.dev
 gcloud artifacts repositories create YOUR_REPOSITORY_NAME --repository-format=docker --location=us-central1
 ```
 Docker イメージのビルド
-
 Go アプリケーションのディレクトリに移動して、Docker イメージをビルドします。
 
 ```bash
