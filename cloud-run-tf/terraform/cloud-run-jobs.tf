@@ -9,7 +9,7 @@ resource "google_cloud_run_v2_job" "your_cloud_run_job" {
         timeout = "180s"
         max_retries = 3
         containers {
-            image = "us-central1-docker.pkg.dev/${var.project_id}/${var.job_repository_name}/${var.job_image_name}:latest"
+            image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.job_repository_name}/${var.job_image_name}:latest"
         # Cloud SQL接続用の環境変数を設定
             env {
                 name  = "DB_HOST"
