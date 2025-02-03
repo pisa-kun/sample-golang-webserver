@@ -13,10 +13,6 @@ resource "google_cloud_run_v2_service" "service-app" {
         network    = google_compute_network.this.name
         subnetwork = google_compute_network.this.name
       }
-    #         network_interfaces {
-    #     network    = "private-network"
-    #     subnetwork = "private-network"
-    #   }
       egress = "PRIVATE_RANGES_ONLY"
     }
     containers {
