@@ -11,3 +11,5 @@
 ```
 
 このcloud runに接続できるapigwをデプロイする
+
+cloud-run-tfが肥大化してきたので、apigw+cloudrunのシンプル構成のサンプルはこちらに
