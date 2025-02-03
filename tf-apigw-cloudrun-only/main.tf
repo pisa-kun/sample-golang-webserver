@@ -1,7 +1,7 @@
 resource "google_cloud_run_v2_service" "service-app" {
-  name     = "service-app"
-  location = var.region
-  deletion_protection=false
+  name                = "service-app"
+  location            = var.region
+  deletion_protection = false
   template {
     scaling {
       max_instance_count = 100
