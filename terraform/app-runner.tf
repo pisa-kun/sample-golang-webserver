@@ -6,7 +6,7 @@ resource "aws_apprunner_service" "example" {
     authentication_configuration {
       access_role_arn = aws_iam_role.role.arn
     }
-    
+
     image_repository {
       image_configuration {
         # Health Checkがあるので、port番号は正しいか注意
