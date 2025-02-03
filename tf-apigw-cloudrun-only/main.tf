@@ -1,4 +1,5 @@
-resource "google_cloud_run_v2_service" "service-app" {
+# リソースが1つの場合はthisにする
+resource "google_cloud_run_v2_service" "this" {
   name                = "service-app"
   location            = var.region
   deletion_protection = false
@@ -18,11 +19,11 @@ resource "google_cloud_run_v2_service" "service-app" {
     containers {
       image = "gcr.io/cloudrun/hello"
     }
-    service_account = google_service_account.service-app.email
+    service_account = google_service_account.service_app.email
   }
 }
 
-resource "google_service_account" "service-app" {
+resource "google_service_account" "service_app" {
   account_id = "service-app"
 }
 
@@ -34,12 +35,12 @@ locals {
   }
 }
 
-resource "google_cloud_run_service_iam_member" "member" {
+resource "google_cloud_run_service_iam_member" "this" {
   for_each = toset(local.gcp.devs)
 
-  location = google_cloud_run_v2_service.service-app.location
-  project  = google_cloud_run_v2_service.service-app.project
-  service  = google_cloud_run_v2_service.service-app.name
+  location = google_cloud_run_v2_service.this.location
+  project  = google_cloud_run_v2_service.this.project
+  service  = google_cloud_run_v2_service.this.name
   role     = "roles/run.invoker"
   #member   = "allUsers"
   member = "user:${each.key}"
