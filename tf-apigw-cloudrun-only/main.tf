@@ -26,10 +26,21 @@ resource "google_service_account" "service-app" {
   account_id = "service-app"
 }
 
+locals {
+  gcp = {
+    devs = [
+      "test@gmail.com"
+    ]
+  }
+}
+
 resource "google_cloud_run_service_iam_member" "member" {
+  for_each = toset(local.gcp.devs)
+
   location = google_cloud_run_v2_service.service-app.location
   project  = google_cloud_run_v2_service.service-app.project
   service  = google_cloud_run_v2_service.service-app.name
   role     = "roles/run.invoker"
-  member   = "allUsers"
+  #member   = "allUsers"
+  member = "user:${each.key}"
 }
