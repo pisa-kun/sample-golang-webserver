@@ -16,6 +16,8 @@ paths:
       summary: Get a hello message
       description: Returns a simple hello world message in JSON format.
       operationId: getHello
+      # x-google-backend:
+      #   address: ${func_url}
       produces:
         - "application/json"
       responses:
