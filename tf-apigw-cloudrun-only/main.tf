@@ -19,29 +19,7 @@ resource "google_cloud_run_v2_service" "this" {
     containers {
       image = "gcr.io/cloudrun/hello"
     }
-    service_account = google_service_account.service_app.email
+    #API Gatewayからの直接アクセスのみ受け付けるのでAPIGW側にrun.invokeのサービスアカウントを紐づける
+    #service_account = google_service_account.service_app.email
   }
-}
-
-resource "google_service_account" "service_app" {
-  account_id = "service-app"
-}
-
-locals {
-  gcp = {
-    devs = [
-      "test@gmail.com"
-    ]
-  }
-}
-
-resource "google_cloud_run_service_iam_member" "this" {
-  for_each = toset(local.gcp.devs)
-
-  location = google_cloud_run_v2_service.this.location
-  project  = google_cloud_run_v2_service.this.project
-  service  = google_cloud_run_v2_service.this.name
-  role     = "roles/run.invoker"
-  #member   = "allUsers"
-  member = "user:${each.key}"
 }

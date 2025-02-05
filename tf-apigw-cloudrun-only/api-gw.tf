@@ -6,9 +6,10 @@ resource "google_service_account" "gateway" {
   display_name = "api-gateway-account"
 }
 # API GatewayのサービスアカウントにIAMポリシーを付与
+# cloud runへアクセスできるように許可追加
 resource "google_project_iam_member" "this" {
   project = var.project_id
-  role    = "roles/run.invoker" # 任意のバックエンドサービスに則ったロールを設定
+  role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.gateway.email}"
 }
 
