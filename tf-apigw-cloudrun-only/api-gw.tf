@@ -34,7 +34,8 @@ resource "google_api_gateway_api_config" "this" {
 
   openapi_documents {
     document {
-      # refer gs bucket
+      # pathに設定した文字列はapi configの画面上で表示されるだけの文字列
+      # path, contents 2つrequiredだが、実態はcontentsの第一引数に渡すファイルとなる
       # path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/tf-apigw-cloudrun-only/openApi.yaml"
       path = "gs://api-gw-test-bucket/openApi.yaml"
       # terraform apply時にcloud runのurlを外部注入する
