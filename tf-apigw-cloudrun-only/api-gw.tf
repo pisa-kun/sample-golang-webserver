@@ -34,7 +34,9 @@ resource "google_api_gateway_api_config" "this" {
 
   openapi_documents {
     document {
-      path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/tf-apigw-cloudrun-only/openApi.yaml"
+      # refer gs bucket
+      # path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/tf-apigw-cloudrun-only/openApi.yaml"
+      path = "gs://api-gw-test-bucket/openApi.yaml"
       # terraform apply時にcloud runのurlを外部注入する
       contents = base64encode(templatefile("openApi.yaml", {
         func_url = google_cloud_run_v2_service.this.uri
