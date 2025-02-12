@@ -25,6 +25,7 @@ resource "google_api_gateway_api_config" "this" {
   provider     = google-beta
   project      = var.project_id
   api          = google_api_gateway_api.this.api_id
+  # 同じ構成に対してOASを上書きできない？
   display_name = "api-gateway-config" # 任意
   gateway_config {
     backend_config {
@@ -39,10 +40,14 @@ resource "google_api_gateway_api_config" "this" {
       # path = "https://github.com/pisa-kun/sample-golang-webserver/blob/main/tf-apigw-cloudrun-only/openApi.yaml"
       path = "gs://api-gw-test-bucket/openApi.yaml"
       # terraform apply時にcloud runのurlを外部注入する
-      contents = base64encode(templatefile("openApi.yaml", {
+      contents = base64encode(templatefile("openApi copy.yaml", {
         func_url = google_cloud_run_v2_service.this.uri
       }))
     }
+  }
+  # contents変更時にConfigごと再作成させる
+    lifecycle {
+    create_before_destroy = true
   }
 }
 
