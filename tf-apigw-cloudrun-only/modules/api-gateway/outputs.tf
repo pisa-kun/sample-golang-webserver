@@ -2,7 +2,7 @@
 
 output "gateway_url" {
   description = "URL of the created API Gateway"
-  value       = google_api_gateway_gateway.this.url
+  value       = "https://${google_api_gateway_gateway.this.default_hostname}"
 }
 
 output "service_account_email" {

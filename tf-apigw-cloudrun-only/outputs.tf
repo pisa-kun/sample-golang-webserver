@@ -4,6 +4,6 @@ output "cloud_run_url" {
 }
 
 output "api_gateway_url" {
-  value       = "https://${google_api_gateway_gateway.this.default_hostname}"
+  value       = module.api_gateway.gateway_url
   description = "The URL of the API Gateway"
 }
