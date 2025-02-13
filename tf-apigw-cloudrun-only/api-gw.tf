@@ -45,7 +45,7 @@ resource "google_api_gateway_api_config" "this" {
     }
   }
   # contents変更時にConfigごと再作成させる
-    lifecycle {
+  lifecycle {
     create_before_destroy = true
   }
 }
