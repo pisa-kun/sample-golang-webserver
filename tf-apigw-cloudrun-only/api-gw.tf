@@ -25,7 +25,6 @@ resource "google_api_gateway_api_config" "this" {
   provider     = google-beta
   project      = var.project_id
   api          = google_api_gateway_api.this.api_id
-  # 同じ構成に対してOASを上書きできない？
   display_name = "api-gateway-config" # 任意
   gateway_config {
     backend_config {
