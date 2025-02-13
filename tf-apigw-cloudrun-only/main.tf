@@ -23,3 +23,17 @@ resource "google_cloud_run_v2_service" "this" {
     #service_account = google_service_account.service_app.email
   }
 }
+
+module "api_gateway" {
+  source = "./modules/api-gateway"
+
+  project_id               = var.project_id
+  region                   = var.region
+  api_id                   = "api-id"
+  api_config_display_name  = "api-gateway-config"
+  openapi_path             = "openApi-show.yaml"
+  openapi_template         = "openApi copy.yaml"
+  func_url                 = google_cloud_run_v2_service.this.uri
+  gateway_id               = "gateway-id"
+  api_gateway_display_name = "api-gatewa-gateway"
+}
