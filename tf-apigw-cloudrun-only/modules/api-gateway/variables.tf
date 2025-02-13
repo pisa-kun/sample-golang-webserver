@@ -10,8 +10,8 @@ variable "region" {
   type        = string
 }
 
-variable "api_id" {
-  description = "The API Gateway ID"
+variable "api_display_name" {
+  description = "Display name for the root API name"
   type        = string
 }
 
@@ -20,27 +20,17 @@ variable "api_config_display_name" {
   type        = string
 }
 
-variable "openapi_path" {
-  description = "The path to the OpenAPI specification file"
+variable "gateway_display_name" {
+  description = "Display name and The ID for the API Gateway Gateway"
   type        = string
 }
 
-variable "openapi_template" {
-  description = "The OpenAPI template file"
+variable "openapi_path" {
+  description = "The path to the local OpenAPI specification file path"
   type        = string
 }
 
 variable "func_url" {
   description = "Cloud Run service URL"
-  type        = string
-}
-
-variable "gateway_id" {
-  description = "The ID of the API Gateway"
-  type        = string
-}
-
-variable "api_gateway_display_name" {
-  description = "Display name for the API Gateway Gateway"
   type        = string
 }

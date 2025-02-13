@@ -13,9 +13,10 @@ resource "google_project_iam_member" "this" {
 }
 
 resource "google_api_gateway_api" "this" {
-  provider = google-beta
-  api_id   = var.api_id
-  project  = var.project_id
+  provider     = google-beta
+  project      = var.project_id
+  api_id       = var.api_display_name
+  display_name = var.api_display_name
 }
 
 resource "google_api_gateway_api_config" "this" {
@@ -32,7 +33,7 @@ resource "google_api_gateway_api_config" "this" {
   openapi_documents {
     document {
       path = var.openapi_path
-      contents = base64encode(templatefile(var.openapi_template, {
+      contents = base64encode(templatefile(var.openapi_path, {
         func_url = var.func_url
       }))
     }
@@ -48,6 +49,6 @@ resource "google_api_gateway_gateway" "this" {
   project      = var.project_id
   region       = var.region
   api_config   = google_api_gateway_api_config.this.id
-  gateway_id   = var.gateway_id
-  display_name = var.api_gateway_display_name
+  gateway_id   = var.gateway_display_name
+  display_name = var.gateway_display_name
 }
