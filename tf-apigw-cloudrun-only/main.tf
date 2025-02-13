@@ -32,6 +32,6 @@ module "api_gateway" {
   api_display_name        = "api-gateway-dev"         # api root display name
   api_config_display_name = "api-gateway-dev-config"  # config root name
   gateway_display_name    = "api-gateway-dev-gateway" # Gateway root name
-  openapi_path            = "openApi-show.yaml"
+  openapi_path            = "openApi.copy.yaml"
   func_url                = google_cloud_run_v2_service.this.uri
 }
