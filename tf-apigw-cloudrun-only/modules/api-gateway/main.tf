@@ -1,9 +1,8 @@
 # modules/api_gateway/main.tf
 
 resource "google_service_account" "gateway" {
-  project      = var.project_id
-  account_id   = "api-gateway-account"
-  display_name = "api-gateway-account"
+  account_id   = var.name
+  description = "Service Account for Sample API Gateway"
 }
 
 resource "google_project_iam_member" "this" {
@@ -15,8 +14,8 @@ resource "google_project_iam_member" "this" {
 resource "google_api_gateway_api" "this" {
   provider     = google-beta
   project      = var.project_id
-  api_id       = var.api_display_name
-  display_name = var.api_display_name
+  api_id       = var.name
+  display_name = var.name
 }
 
 resource "google_api_gateway_api_config" "this" {

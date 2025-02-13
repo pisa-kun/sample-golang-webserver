@@ -10,7 +10,7 @@ variable "region" {
   type        = string
 }
 
-variable "api_display_name" {
+variable "name" {
   description = "Display name for the root API name"
   type        = string
 }
