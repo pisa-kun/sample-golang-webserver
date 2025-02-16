@@ -231,3 +231,12 @@ cdk deploy --all
 
 または
 > docker compose up super-linter
+
+## markdownlint
+
+<https://github.com/DavidAnson/markdownlint>
+
+```bash
+npm install -g markdownlint-cli
+npx markdownlint --fix "**/*.md"
+```
