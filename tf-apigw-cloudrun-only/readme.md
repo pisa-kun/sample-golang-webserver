@@ -1,6 +1,6 @@
 # apigw + cloud run
 
-```
+```terraform
     vpc_access {
       network_interfaces {
         network    = "private-network"
@@ -14,10 +14,10 @@
 
 cloud-run-tfが肥大化してきたので、apigw+cloudrunのシンプル構成のサンプルはこちらに
 
-### Cloud Run
+## Cloud Run
 
 直接curlするとpermission errorになる
 
-### api gateway
+## api gateway
 
 Hello Worldが返ってくる

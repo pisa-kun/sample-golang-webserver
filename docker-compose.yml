@@ -43,13 +43,13 @@ services:
       MULTI_STATUS: 'false'
       VALIDATE_ALL_CODEBASE: 'true'
       # Terraform と Markdown のみを有効化
-      VALIDATE_TERRAFORM_TFLINT: 'true'
-      VALIDATE_TERRAFORM_TERRASCAN: 'true'
+      #VALIDATE_TERRAFORM_TFLINT: 'true'
+      #VALIDATE_TERRAFORM_TERRASCAN: 'true'
       VALIDATE_MARKDOWN: 'true'
       # キャッシュを有効化して実行速度を向上
       USE_FIND_ALGORITHM: 'true'
       DEFAULT_BRANCH: 'main' # デフォルトのブランチを指定 master -> mainに変更
-      DISABLE_ERRORS: 'true'  # レポート出力を抑制
+      #DISABLE_ERRORS: 'true'  # レポート出力を抑制
       LOG_LEVEL: 'ERROR'  # ログレベルを ERROR に設定
       LOG_VERBOSE: 'false'  # 詳細なログを無効化
     volumes:

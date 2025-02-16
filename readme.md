@@ -105,7 +105,7 @@ go get github.com/aws/aws-sdk-go
 
 以下のコマンドを実行し、信頼関係ポリシーを記述したJSONファイルを作成します。
 
-```
+```bash
 cat << EOF > apprunner-role-policy.json
 {
   "Version": "2012-10-17",
@@ -237,6 +237,6 @@ cdk deploy --all
 <https://github.com/DavidAnson/markdownlint>
 
 ```bash
-npm install -g markdownlint-cli
-npx markdownlint --fix "**/*.md"
+pnpm install -g markdownlint-cli
+markdownlint --fix "**/*.md"
 ```
