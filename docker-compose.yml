@@ -35,3 +35,20 @@ services:
       - AIR_WATCH_DIR=/app
     # air用の設定を追加
     entrypoint: ["air", "-c", "/app/.air.toml"]  # airの設定ファイル（.air.toml）を指定
+
+  super-linter:
+    image: ghcr.io/super-linter/super-linter:slim-v5
+    environment:
+      RUN_LOCAL: 'true'
+      MULTI_STATUS: 'false'
+      VALIDATE_ALL_CODEBASE: 'true'
+      # Terraform と Markdown のみを有効化
+      VALIDATE_TERRAFORM_TFLINT: 'true'
+      VALIDATE_TERRAFORM_TERRASCAN: 'true'
+      VALIDATE_MARKDOWN: 'true'
+      # キャッシュを有効化して実行速度を向上
+      USE_FIND_ALGORITHM: 'true'
+      DEFAULT_BRANCH: 'main'
+    volumes:
+      - .:/tmp/lint
+    working_dir: /tmp/lint

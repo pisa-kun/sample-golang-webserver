@@ -209,3 +209,14 @@ https://tech.robotpayment.co.jp/entry/2023/06/01/070000
 ## Fargateへのデプロイ
 
 https://zenn.dev/hirokisakabe/articles/73d7d30a0e2ec8
+
+
+## Super-linter
+
+https://github.com/super-linter/super-linter
+
+-e DEFAULT_BRANCH=main でデフォルトのブランチを指定
+> docker run -e RUN_LOCAL=true -e VALIDATE_ALL_CODEBASE=true -e DEFAULT_BRANCH=main -v "${PWD}:/tmp/lint" --rm ghcr.io/super-linter/super-linter:slim-v5
+
+または
+> docker compose up super-linter
