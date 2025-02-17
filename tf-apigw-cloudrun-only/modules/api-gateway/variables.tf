@@ -20,7 +20,7 @@ variable "openapi_path" {
   type        = string
 }
 
-variable "func_url" {
+variable "backend_url" {
   description = "Cloud Run service URL"
   type        = string
 }

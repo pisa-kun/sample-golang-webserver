@@ -33,7 +33,7 @@ resource "google_api_gateway_api_config" "this" {
     document {
       path = var.openapi_path
       contents = base64encode(templatefile(var.openapi_path, {
-        func_url = var.func_url
+        func_url = var.backend_url
       }))
     }
   }

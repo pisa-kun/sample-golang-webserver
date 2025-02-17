@@ -27,9 +27,9 @@ resource "google_cloud_run_v2_service" "this" {
 module "api_gateway" {
   source = "./modules/api-gateway"
 
-  project_id              = var.project_id
-  region                  = var.region
-  name                    = "api-gateway-dev"         # api root display name
-  openapi_path            = "openApi.copy.yaml"
-  func_url                = google_cloud_run_v2_service.this.uri
+  project_id   = var.project_id
+  region       = var.region
+  name         = "api-gateway-dev" # api root display name
+  openapi_path = "openApi.copy.yaml"
+  backend_url  = google_cloud_run_v2_service.this.uri
 }
