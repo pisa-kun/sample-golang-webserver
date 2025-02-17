@@ -1,17 +1,15 @@
 # リソースが1つの場合はthisにする
 module "service-app" {
-  source = "./modules/cloud-run"
-
-  name                             = "service-app"
-  region                           = var.region
-  network_name                     = google_compute_network.this.name
-  subnetwork_name                  = google_compute_network.this.name
-  container_image                  = "gcr.io/cloudrun/hello"
+  source          = "./modules/cloud-run"
+  name            = "service-app"
+  region          = var.region
+  network_name    = google_compute_network.this.name
+  subnetwork_name = google_compute_network.this.name
+  container_image = "gcr.io/cloudrun/hello"
 }
 
 module "api_gateway" {
-  source = "./modules/api-gateway"
-
+  source       = "./modules/api-gateway"
   project_id   = var.project_id
   region       = var.region
   name         = "api-gateway-dev" # api root display name
