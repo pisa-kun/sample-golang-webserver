@@ -1,27 +1,12 @@
 # リソースが1つの場合はthisにする
-resource "google_cloud_run_v2_service" "this" {
-  name                = "service-app"
-  location            = var.region
-  deletion_protection = false
-  template {
-    scaling {
-      max_instance_count = 100
-    }
-    max_instance_request_concurrency = 200
+module "service-app" {
+  source = "./modules/cloud-run"
 
-    vpc_access {
-      network_interfaces {
-        network    = google_compute_network.this.name
-        subnetwork = google_compute_network.this.name
-      }
-      egress = "PRIVATE_RANGES_ONLY"
-    }
-    containers {
-      image = "gcr.io/cloudrun/hello"
-    }
-    #API Gatewayからの直接アクセスのみ受け付けるのでAPIGW側にrun.invokeのサービスアカウントを紐づける
-    #service_account = google_service_account.service_app.email
-  }
+  name                             = "service-app"
+  region                           = var.region
+  network_name                     = google_compute_network.this.name
+  subnetwork_name                  = google_compute_network.this.name
+  container_image                  = "gcr.io/cloudrun/hello"
 }
 
 module "api_gateway" {
@@ -31,5 +16,5 @@ module "api_gateway" {
   region       = var.region
   name         = "api-gateway-dev" # api root display name
   openapi_path = "openApi.copy.yaml"
-  backend_url  = google_cloud_run_v2_service.this.uri
+  backend_url  = module.service-app.cloud_run_url
 }

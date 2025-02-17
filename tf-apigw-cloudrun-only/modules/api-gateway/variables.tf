@@ -6,7 +6,8 @@ variable "project_id" {
 }
 
 variable "region" {
-  description = "The region where the API Gateway will be deployed"
+  description = "The Google Cloud region where resources will be provisioned."
+  default     = "asia-northeast1"
   type        = string
 }
 
