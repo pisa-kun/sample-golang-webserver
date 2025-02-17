@@ -38,9 +38,9 @@ resource "google_api_gateway_api_config" "this" {
     }
   }
 
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_api_gateway_gateway" "this" {

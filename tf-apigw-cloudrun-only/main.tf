@@ -15,6 +15,6 @@ module "api_gateway" {
   project_id   = var.project_id
   region       = var.region
   name         = "api-gateway-dev" # api root display name
-  openapi_path = "openApi.copy.yaml"
+  openapi_path = "openApi.yaml"
   backend_url  = module.service-app.cloud_run_url
 }
