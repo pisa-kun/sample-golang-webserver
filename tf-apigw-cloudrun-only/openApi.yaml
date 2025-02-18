@@ -10,6 +10,20 @@ basePath: "/"
 x-google-backend:
   address: ${func_url}
 
+x-google-management:
+  metrics:
+    - name: "read-requests"
+      displayName: "Read requests"
+      valueType: INT64
+      metricKind: DELTA
+  quota:
+    limits:
+      - name: "read-limit"
+        metric: "read-requests"
+        unit: "1/min/{project}"
+        values:
+          STANDARD: 1000
+
 paths:
   /:
     get:
