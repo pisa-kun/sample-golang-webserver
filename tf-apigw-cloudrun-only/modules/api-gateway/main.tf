@@ -1,7 +1,8 @@
 # modules/api_gateway/main.tf
 
 resource "google_service_account" "gateway" {
-  account_id   = var.name
+  account_id  = var.name
+  project     = var.project_id
   description = "Service Account for Sample API Gateway"
 }
 
