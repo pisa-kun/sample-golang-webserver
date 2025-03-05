@@ -9,3 +9,7 @@ output "service_account_email" {
   description = "Email of the created service account"
   value       = google_service_account.gateway.email
 }
+
+output "api_key" {
+  value = google_apikeys_key.this.key_string
+}
