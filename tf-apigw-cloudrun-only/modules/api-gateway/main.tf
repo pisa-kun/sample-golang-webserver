@@ -58,7 +58,7 @@ resource "google_api_gateway_gateway" "this" {
 resource "null_resource" "enable_api_gateway_service" {
   provisioner "local-exec" {
     command = <<-EOT
-      gcloud services enable ${google_api_gateway_api.api-gateway.managed_service}
+      gcloud services enable ${google_api_gateway_api.this.managed_service}
     EOT
   }
 }
@@ -72,7 +72,7 @@ resource "google_apikeys_key" "this" {
   
     restrictions {
         api_targets {
-          service = google_api_gateway_api.api-gateway.managed_service
+          service = google_api_gateway_api.this.managed_service
         }
   }
 }
