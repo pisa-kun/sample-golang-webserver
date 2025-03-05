@@ -1,11 +1,18 @@
 provider "google" {
   project = var.project_id
   region  = var.region
+
+  // TODO: gcloud services enable iam.googleapis.com
+  user_project_override = true
+  billing_project = var.project_id
 }
 
 provider "google-beta" {
   project = var.project_id
   region  = var.region
+
+  user_project_override = true
+  billing_project = var.project_id
 }
 
 # API Gateway APIを有効化
@@ -26,4 +33,9 @@ provider "google-beta" {
 # resource "google_project_service" "servicecontrol" {
 #   project = var.project_id
 #   service = "servicecontrol.googleapis.com"
+# }
+
+# resource "google_project_service" "apikeys" {
+#   project = var.project_id
+#   service = "apikeys.googleapis.com"
 # }

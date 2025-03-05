@@ -55,15 +55,17 @@ resource "google_api_gateway_gateway" "this" {
 
 #--options--
 # Apigatewayが作成された後に呼び出す
-resource "null_resource" "enable_api_gateway_service" {
-  provisioner "local-exec" {
-    command = <<-EOT
-      gcloud services enable ${google_api_gateway_api.this.managed_service}
-    EOT
-  }
-}
+# resource "null_resource" "enable_api_gateway_service" {
+#   provisioner "local-exec" {
+#     command = <<-EOT
+#       gcloud services enable ${google_api_gateway_api.this.managed_service}
+#     EOT
+#   }
+# }
 
 # api-keyの作成
+# gcloud services enable apikeys.googleapis.com --project YOUR_PROJECT_ID
+# gcloud auth application-default login
 resource "google_apikeys_key" "this" {
   name = "${var.name}-key"
   display_name = "${var.name}-key"
