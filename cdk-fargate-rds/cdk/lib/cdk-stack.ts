@@ -28,7 +28,7 @@ export class CdkFargateRdsStack extends cdk.Stack {
     // 2. DB認証情報（Secrets Manager）
     const dbSecret = new secretsmanager.Secret(this, 'DbSecret', {
       generateSecretString: {
-        secretStringTemplate: JSON.stringify({ username: 'admin' }),
+        secretStringTemplate: JSON.stringify({ username: 'pgadmin' }),
         generateStringKey: 'password',
         excludeCharacters: '\"@/\\',
       },
@@ -73,7 +73,7 @@ export class CdkFargateRdsStack extends cdk.Stack {
           DB_HOST: dbInstance.dbInstanceEndpointAddress,
           DB_PORT: dbInstance.dbInstanceEndpointPort,
           DB_NAME: 'postgres',
-          DB_USER: 'admin',
+          DB_USER: 'pgadmin',
           DB_PASSWORD: dbSecret.secretValueFromJson('password').unsafeUnwrap(), // 簡易用。※本番は避ける
         },
       },
