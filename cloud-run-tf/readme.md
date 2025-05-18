@@ -41,6 +41,12 @@ docker-compose restart
 docker-compose down -v
 ```
 
+**補足: PostgreSQLのバージョンを更新した場合**
+
+ボリュームを削除する必要がある。
+
+> docker volume rm cloud-run-tf_postgres_data
+
 3. Terraformの設定
 Google Cloud SDK のインストールと認証
 
