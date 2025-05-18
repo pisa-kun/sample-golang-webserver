@@ -70,6 +70,39 @@ PostgreSQL に接続するために `lib/pq` パッケージをインストー�
 
 その後、ブラウザで [http://localhost:8080](http://localhost:8080) を開き、データベースに格納されているデータが表示されることを確認します。
 
+### 4. ECRリポジトリ作成とDockerイメージの登録
+
+ルートディレクトリで次のコマンドを実行して、イメージをECRへPushする。
+
+#### 4.0 環境変数を設定
+まず、アカウントIDとリージョンを環境変数に設定します（毎回手で入力したくない人向け）。
+
+export ACCOUNT_ID=<自身のアカウントIDをセットする。12桁の数字>
+export REGION=ap-northeast-1
+export REPOSITORY_NAME=cdk-fargate-rds-repository
+export ECR_URI=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REPOSITORY_NAME}
+
+
+#### 4.1 ECRリポジトリの作成
+
+> aws ecr create-repository --repository-name $REPOSITORY_NAME --region $REGION
+
+#### 4.2 ECRにログイン
+
+> aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
+
+#### 4.3 Dockerイメージをビルド
+
+> docker build -t $REPOSITORY_NAME .
+
+#### 4. イメージにタグをつける
+
+> docker tag ${REPOSITORY_NAME}:latest ${ECR_URI}:latest
+
+#### 5. ECRにDockerイメージをプッシュ
+
+> docker push ${ECR_URI}:latest
+
 
 ---
 
