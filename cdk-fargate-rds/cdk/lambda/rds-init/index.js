@@ -1,7 +1,7 @@
-import { SecretsManager } from 'aws-sdk';
-import { Client } from 'pg';
-import * as fs from 'fs';
-import * as path from 'path';
+const { SecretsManager } = require('aws-sdk');
+const { Client } = require('pg');
+const fs = require('fs');
+const path = require('path');
 
 // bundle時にtscしたいが、面倒だったのでjsファイルでいく
 exports.handler = async function () {
