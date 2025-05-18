@@ -95,14 +95,19 @@ export ECR_URI=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REPOSITORY_NAME}
 
 > docker build -t $REPOSITORY_NAME .
 
-#### 4. イメージにタグをつける
+#### 4.4 イメージにタグをつける
 
 > docker tag ${REPOSITORY_NAME}:latest ${ECR_URI}:latest
 
-#### 5. ECRにDockerイメージをプッシュ
+#### 4.5. ECRにDockerイメージをプッシュ
 
 > docker push ${ECR_URI}:latest
 
+### 5. CDKのデプロイ
+
+アカウントIDをハードコードしないようにしているので、cdk deploy時にecrRepositoryUriに自身のアカウントIDを差し替えて次のコマンドを実行する。
+
+> cdk deploy --context ecrRepositoryUri=<アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/cdk-fargate-rds-repository:latest
 
 ---
 
