@@ -20,6 +20,7 @@ exports.handler = async function () {
     host,
     port,
     database: dbName,
+    ssl: { rejectUnauthorized: false }, // SSLを有効にする
   });
 
   // 同梱された init.sql を読み込む
