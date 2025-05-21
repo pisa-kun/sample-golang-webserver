@@ -76,6 +76,7 @@ export class CdkFargateRdsStack extends cdk.Stack {
           DB_USER: 'pgadmin',
           DB_PASSWORD: dbSecret.secretValueFromJson('password').unsafeUnwrap(), // 簡易用。※本番は避ける
         },
+        containerPort: 8080, // ここをアプリのリッスンポートに合わせて変更
       },
       publicLoadBalancer: true,
       deploymentController: {
@@ -85,6 +86,17 @@ export class CdkFargateRdsStack extends cdk.Stack {
         rollback: true,
       },
       healthCheckGracePeriod: cdk.Duration.seconds(60),
+      listenerPort: 80, // 必要に応じて追加
+    });
+
+    // Health Checkのパスを明示的に設定（例: /health）
+    fargateService.targetGroup.configureHealthCheck({
+      path: "/health", // アプリが応答するヘルスチェック用のパスに合わせて変更
+      healthyHttpCodes: "200-399",
+      interval: cdk.Duration.seconds(30),
+      timeout: cdk.Duration.seconds(5),
+      unhealthyThresholdCount: 2,
+      healthyThresholdCount: 2,
     });
 
     // Grant ECR pull permissions to the task execution role
