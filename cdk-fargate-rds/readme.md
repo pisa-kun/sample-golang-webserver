@@ -91,10 +91,10 @@ PostgreSQL に接続するために `lib/pq` パッケージをインストー�
 #### 4.0 環境変数を設定
 まず、アカウントIDとリージョンを環境変数に設定します（毎回手で入力したくない人向け）。
 
-export ACCOUNT_ID=<自身のアカウントIDをセットする。12桁の数字>
-export REGION=ap-northeast-1
-export REPOSITORY_NAME=cdk-fargate-rds-repository
-export ECR_URI=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REPOSITORY_NAME}
+set ACCOUNT_ID=<自身のアカウントIDをセットする。12桁の数字>
+set REGION=ap-northeast-1
+set REPOSITORY_NAME=cdk-fargate-rds-repository
+set ECR_URI=%ACCOUNT_ID%.dkr.ecr.%REGION%.amazonaws.com/%REPOSITORY_NAME%
 
 
 #### 4.1 ECRリポジトリの作成
