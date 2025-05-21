@@ -78,7 +78,19 @@ export class CdkFargateRdsStack extends cdk.Stack {
         },
       },
       publicLoadBalancer: true,
+      deploymentController: {
+        type: ecs.DeploymentControllerType.ECS,
+      },
+      circuitBreaker: {
+        rollback: true,
+      },
+      healthCheckGracePeriod: cdk.Duration.seconds(60),
     });
+
+    // Grant ECR pull permissions to the task execution role
+    fargateService.taskDefinition.obtainExecutionRole().addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly')
+    );
 
     // Lambda のコードと init.sql を含むディレクトリを指定
     const lambdaCodePath = path.join(__dirname, '..', 'lambda', 'rds-init');
