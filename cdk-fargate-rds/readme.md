@@ -112,7 +112,7 @@ export ECR_URI=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REPOSITORY_NAME}
 
 アカウントIDをハードコードしないようにしているので、cdk deploy時にecrRepositoryUriに自身のアカウントIDを差し替えて cdkプロジェクトで 次のコマンドを実行する。
 
-> cdk deploy --context ecrRepositoryUri=<アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/cdk-fargate-rds-repository:latest
+> cdk deploy --context ecrRepositoryUri=${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REPOSITORY_NAME}:latest
 
 ---
 
